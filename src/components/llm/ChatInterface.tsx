@@ -34,67 +34,13 @@ const ChatInterface = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedModel, setSelectedModel] = useState<LLMModel>("claude");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [debugMessages, setDebugMessages] = useState<
-    Array<{
-      role: "user" | "assistant" | "system";
-      content: string;
-      timestamp: string;
-    }>
-  >([
-    {
-      role: "system",
-      content: "Debug window initialized",
-      timestamp: new Date().toLocaleTimeString(),
-    },
-  ]);
-  const [showDebugWindow, setShowDebugWindow] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
   const [debugWindow, setDebugWindow] = useState<Window | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
-    // Initialize debug messages after component mounts
-    setDebugMessages([
-      {
-        role: "system",
-        content: "Debug console initialized",
-        timestamp: new Date().toLocaleTimeString(),
-      },
-    ]);
   }, []);
-
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      const messagesContainer = messagesEndRef.current.parentElement;
-      if (messagesContainer) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-    }
-  }, [messages]);
-
-  useEffect(() => {
-    console.log("Debug window state:", {
-      showDebugWindow,
-      messageCount: debugMessages.length,
-    });
-  }, [showDebugWindow, debugMessages]);
-
-  // Add test message every 5 seconds to verify it's working
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDebugMessages((prev) => [
-        ...prev,
-        {
-          role: "system",
-          content: "Test message: " + new Date().toISOString(),
-          timestamp: new Date().toLocaleTimeString(),
-        },
-      ]);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
+  
   // Function to open debug window
   const openDebugWindow = () => {
     const debug = window.open(
@@ -104,7 +50,7 @@ const ChatInterface = () => {
     );
     setDebugWindow(debug);
   };
-
+  
   // Function to send message to debug window
   const sendToDebugWindow = (message: any) => {
     if (debugWindow && !debugWindow.closed) {
@@ -118,19 +64,28 @@ const ChatInterface = () => {
     }
   };
 
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      const messagesContainer = messagesEndRef.current.parentElement;
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }
+  }, [messages]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
     const timestamp = new Date().toLocaleTimeString();
-
+    
     // Send user message to debug window
     sendToDebugWindow({
       role: "user",
       content: input.trim(),
       timestamp,
     });
-
+    
     // Add input validation
     const sanitizedInput = input.trim();
 
@@ -183,7 +138,7 @@ const ChatInterface = () => {
       }
 
       const data = await response.json();
-
+      
       // Send to debug window with technical details
       sendToDebugWindow({
         role: "assistant",
@@ -293,7 +248,6 @@ const ChatInterface = () => {
                   }
                 />
               </div>
-
               <motion.button
                 onClick={openDebugWindow}
                 className="text-xs px-6 py-1.5 bg-primary-DEFAULT/20 hover:bg-primary-DEFAULT/30 text-primary-light rounded-md flex items-center gap-3 transition-colors whitespace-nowrap min-w-[120px]"
@@ -397,6 +351,7 @@ const ChatInterface = () => {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask a question..."
                   className="chat-input flex-1"
+                  style={{ border: "1px solid rgba(75, 85, 99, 0.2)" }}
                   disabled={isLoading}
                 />
                 <motion.button
@@ -429,50 +384,6 @@ const ChatInterface = () => {
           </div>
         </motion.div>
       </div>
-
-      {/* Debug Panel - Now with very visible styling */}
-      <div
-        className="fixed right-4 top-24 w-96 z-[9999]"
-        style={{ backgroundColor: "red" }}
-      >
-        <div className="bg-black border-4 border-red-500 rounded-lg shadow-2xl">
-          {/* Debug Header */}
-          <div className="bg-red-500 p-4 flex items-center justify-between">
-            <h3 className="text-white font-bold text-lg">DEBUG CONSOLE</h3>
-            <button
-              onClick={() => setShowDebugWindow(!showDebugWindow)}
-              className="bg-white text-red-500 px-4 py-2 rounded-lg font-bold"
-            >
-              {showDebugWindow ? "HIDE" : "SHOW"}
-            </button>
-          </div>
-
-          {/* Debug Content */}
-          {showDebugWindow && (
-            <div className="max-h-[600px] overflow-y-auto p-4">
-              {debugMessages.map((message, index) => (
-                <div key={index} className="mb-4 border-b border-red-500 pb-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-red-500 font-bold">
-                      {message.role}:
-                    </span>
-                    <span className="text-white">{message.timestamp}</span>
-                  </div>
-                  <pre className="text-white mt-1 pl-4">{message.content}</pre>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Additional Debug Button - Positioned differently */}
-      <button
-        className="fixed left-4 top-24 z-[9999] bg-red-500 text-white px-6 py-3 rounded-lg font-bold shadow-2xl"
-        onClick={() => setShowDebugWindow(!showDebugWindow)}
-      >
-        {showDebugWindow ? "Hide Debug" : "Show Debug"}
-      </button>
     </section>
   );
 };

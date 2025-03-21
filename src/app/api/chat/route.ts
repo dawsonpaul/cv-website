@@ -298,8 +298,13 @@ export async function POST(request: NextRequest) {
       const endTime = performance.now();
       const latency = endTime - startTime;
 
+      // Convert response content to string
+      const contentString = typeof response.content === 'string' 
+        ? response.content 
+        : JSON.stringify(response.content);
+      
       // Calculate output tokens (approximate)
-      const outputTokens = response.content.length / 4;
+      const outputTokens = contentString.length / 4;
 
       debugInfo = {
         model: model,
@@ -316,13 +321,13 @@ export async function POST(request: NextRequest) {
           outputTokens: Math.round(outputTokens),
           totalTokens: Math.round(inputTokens + outputTokens),
           latency: Math.round(latency),
-          content: response.content,
+          content: contentString,
           finishReason: "stop", // Add actual finish reason if available
         },
       };
 
       if (model === "gemini") {
-        if (!validateGeminiResponse(response.content)) {
+        if (!validateGeminiResponse(contentString)) {
           // If validation fails, return a sanitized response
           return NextResponse.json({
             content:
@@ -332,14 +337,14 @@ export async function POST(request: NextRequest) {
         }
 
         return NextResponse.json({
-          content: response.content,
+          content: contentString,
           model: model,
           debug: debugInfo,
         });
       }
 
       return NextResponse.json({
-        content: response.content,
+        content: contentString,
         model: model,
         debug: debugInfo,
       });
@@ -406,9 +411,6 @@ function getContextWindow(model: string): number {
   }
 }
 
-// Enable CORS and set the correct HTTP methods
-export const config = {
-  api: {
-    bodyParser: true,
-  },
-};
+// Route segment config
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';

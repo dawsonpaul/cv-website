@@ -174,8 +174,9 @@ const Skills = () => {
               skill={{
                 ...skill,
                 name: capitalizeFirstLetter(skill.name),
-                category: capitalizeFirstLetter(skill.category),
+                // Don't modify the category as it needs to match the type definition
               }}
+              displayCategory={capitalizeFirstLetter(skill.category)}
               index={index}
             />
           ))}
@@ -187,10 +188,11 @@ const Skills = () => {
 
 interface SkillCardProps {
   skill: Skill;
+  displayCategory?: string;
   index: number;
 }
 
-const SkillCard = ({ skill, index }: SkillCardProps) => {
+const SkillCard = ({ skill, displayCategory, index }: SkillCardProps) => {
   const IconComponent =
     skillNameIcons[skill.name] || skillIcons[skill.category] || FaCode;
 
