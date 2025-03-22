@@ -1,5 +1,7 @@
 # CV Website with LLM Chat Integration
 
+https://cv.paulanthonydawson.com
+
 A modern, interactive CV/resume website built with Next.js that features an AI-powered chat interface allowing visitors to interact with the CV data through multiple LLM providers.
 
 ![CV Website Screenshot 1](/public/images/web-pic1.png)
