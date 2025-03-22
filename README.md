@@ -2,7 +2,8 @@
 
 A modern, interactive CV/resume website built with Next.js that features an AI-powered chat interface allowing visitors to interact with the CV data through multiple LLM providers.
 
-![CV Website Screenshot](https://placeholder-for-screenshot.com)
+![CV Website Screenshot 1](/public/images/web-pic1.png)
+![CV Website Screenshot 2](/public/images/web-pic2.png)
 
 ## Table of Contents
 

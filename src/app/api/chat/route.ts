@@ -83,6 +83,19 @@ function validateEnvVars() {
   }
 }
 
+// Shared promotional content for all prompts
+function getPromotionalGuidelines(): string {
+  return `TONE AND STYLE GUIDELINES:
+1. Be professional but conversational and approachable
+2. Highlight Paul's achievements and skills with confidence, but maintain credibility
+3. When discussing Paul's expertise, provide specific examples from his work history
+4. Present Paul as a technology leader with vision and practical implementation skills
+5. If asked about Paul's strengths, emphasize his ability to bridge technical complexity with business value
+6. Don't be overly formal or stiff - maintain a balance of professionalism and personality
+7. Feel free to show enthusiasm when describing notable achievements or technical innovations
+8. IMPORTANT: Do not suggest that users contact, email, or refer to Paul directly - you are here to provide information only`;
+}
+
 // Prepare system prompt with CV data
 function prepareSystemPrompt(): SystemMessage {
   // Format work experience chronologically
@@ -128,6 +141,8 @@ INSTRUCTIONS:
 6. Do not disclose personal contact information
 7. If asked about anything not covered in the CV, clearly state that the information is not included in the CV data
 
+${getPromotionalGuidelines()}
+
 Remember: You have full access to this CV data. Use it to provide accurate, detailed responses about Paul's career history.`,
   });
 }
@@ -135,33 +150,33 @@ Remember: You have full access to this CV data. Use it to provide accurate, deta
 // Prepare system prompt specifically for Gemini
 function prepareGeminiPrompt(): SystemMessage {
   return new SystemMessage({
-    content: `CRITICAL INSTRUCTION - READ CAREFULLY:
-You are in STRICT FACTS ONLY mode. You must NEVER invent or assume information.
+    content: `You are an AI assistant representing Paul Dawson's professional CV.
 
-HERE IS THE ONLY DATA YOU CAN USE:
+You have access to the following verified data from Paul's CV:
 
 CURRENT ROLE:
 Lead Security DevOps Automation Engineer at HSBC (July 2023 - Present)
 
-VERIFIED EMPLOYMENT HISTORY:
+EMPLOYMENT HISTORY:
 ${cvData.workExperience
   .map(
     (exp) =>
       `• ${exp.startDate} - ${exp.endDate}
     Company: ${exp.company}
-    Role: ${exp.role}
-    Verified: YES`
+    Role: ${exp.role}`
   )
   .join("\n\n")}
 
-RESPONSE RULES:
-1. ONLY use the above data
-2. If asked about a date/company not listed above, respond: "The CV data does not show any employment at that time/company."
-3. DO NOT infer or guess about employment details
-4. DO NOT reference any companies or dates not explicitly listed above
-5. If uncertain, say "I cannot verify that from the CV data"
+GUIDELINES:
+1. Base your responses on the CV data provided above
+2. You may elaborate on Paul's experience in a conversational, helpful way
+3. If asked about something not in the CV, you can indicate that the information isn't in Paul's CV
+4. Maintain a professional but friendly tone
+5. For questions about Paul's skills or experience, focus on the data provided
 
-Format all dates exactly as shown above. Do not modify or interpret date formats.`,
+${getPromotionalGuidelines()}
+
+Please keep answers factual and based on the CV information while being helpful and engaging.`,
   });
 }
 
@@ -211,6 +226,7 @@ const models = {
     modelName: "gemini-1.5-pro",
     maxOutputTokens: 300,
     apiKey: process.env.GOOGLE_GEMINI_API_KEY,
+    temperature: 0.4,
   }),
 };
 
@@ -299,10 +315,11 @@ export async function POST(request: NextRequest) {
       const latency = endTime - startTime;
 
       // Convert response content to string
-      const contentString = typeof response.content === 'string' 
-        ? response.content 
-        : JSON.stringify(response.content);
-      
+      const contentString =
+        typeof response.content === "string"
+          ? response.content
+          : JSON.stringify(response.content);
+
       // Calculate output tokens (approximate)
       const outputTokens = contentString.length / 4;
 
@@ -412,5 +429,5 @@ function getContextWindow(model: string): number {
 }
 
 // Route segment config
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";

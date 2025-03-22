@@ -171,6 +171,22 @@ const TerminalText = ({ text }: { text: string }) => {
         <div className="text-xs text-gray-300 font-medium">
           paul@macbook-pro — bash — 80×24
         </div>
+
+        {/* Expand/Collapse button on right */}
+        <div className="absolute right-4 flex items-center">
+          <div className="w-4 h-4 flex items-center justify-center cursor-pointer hover:bg-gray-600 rounded">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              width="10"
+              height="10"
+              fill="currentColor"
+              className="text-gray-300"
+            >
+              <path d="M5.828 10.172a.5.5 0 0 0-.707 0l-4.096 4.096V11.5a.5.5 0 0 0-1 0v3.975a.5.5 0 0 0 .5.5H4.5a.5.5 0 0 0 0-1H1.732l4.096-4.096a.5.5 0 0 0 0-.707zm4.344-4.344a.5.5 0 0 0 .707 0l4.096-4.096V4.5a.5.5 0 1 0 1 0V.525a.5.5 0 0 0-.5-.5H11.5a.5.5 0 0 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 0 .707z" />
+            </svg>
+          </div>
+        </div>
       </div>
 
       {/* iTerm-style terminal content with solid background */}

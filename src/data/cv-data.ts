@@ -158,7 +158,7 @@ export const cvData: CVData = {
     location: "Essex, United Kingdom",
   },
   profileSummary:
-    "24 years Security Industry related experience. Contracting for 17 years with major firms like HSBC, LSEG, Duetsche Bank, UBS Investment Bank, Sainsburys and Willis Towers Watson. Highly proficient L2-L7 engineer. Programming languages - Bash, Python, PowerShell and Terraform IAC. Comfortable with Javascript, and Golang. Passionate and always learning about things InfoSec, Data Science, programming languages, tech advancements.",
+    "Technology leader with over two decades of professional experience, including 17 years as a contractor for major enterprises including HSBC, LSEG, Deutsche Bank, UBS Investment Bank, Sainsbury's, and Willis Towers Watson. Currently leading a team of DevOps Engineers at HSBC, specializing in cloud infrastructure, automation, and enterprise architecture. Recognized as a visionary problem-solver who creates innovative technical solutions through strategic automation. Proficient in multiple programming languages including Python, Bash, PowerShell, Terraform, JavaScript, Golang, and Jenkins Groovy. Experienced with both frontier and private LLM models. Committed to continuous learning and innovation in technology, with a passion for automating complex processes and delivering elegant solutions to challenging technical problems.",
   skills: [
     { name: "Web Application Firewall (WAF)", category: "security", level: 5 },
     { name: "Cloud Security", category: "security", level: 5 },

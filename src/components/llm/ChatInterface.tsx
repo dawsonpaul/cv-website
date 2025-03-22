@@ -322,17 +322,23 @@ const ChatInterface = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="glass-effect text-text-light max-w-[80%] rounded-xl px-5 py-4 shadow-soft">
-                    <div className="flex space-x-2">
-                      <div className="w-2 h-2 rounded-full bg-primary-light animate-bounce"></div>
-                      <div
-                        className="w-2 h-2 rounded-full bg-primary-light animate-bounce"
-                        style={{ animationDelay: "0.2s" }}
-                      ></div>
-                      <div
-                        className="w-2 h-2 rounded-full bg-primary-light animate-bounce"
-                        style={{ animationDelay: "0.4s" }}
-                      ></div>
+                  <div className="glass-effect text-text-light max-w-[80%] rounded-xl px-6 py-4 shadow-soft">
+                    <div className="flex items-center justify-center w-12 h-8">
+                      <motion.img
+                        src={`/logos/${selectedModel}-logo.png`}
+                        alt={`${selectedModel} logo`}
+                        style={{ width: "20px", height: "20px" }}
+                        className="object-contain"
+                        animate={{
+                          scale: [1, 1.2, 1],
+                          opacity: [0.7, 1, 0.7],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                        }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -388,56 +394,75 @@ const ChatInterface = () => {
                     type="button"
                     onClick={() =>
                       setInput(
-                        "How many Financial Institutions has Paul worked at?"
+                        "What financial sector experience does Paul have?"
                       )
                     }
-                    className="text-xs px-4 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
-                    style={{ 
-                      backgroundColor: "#1e40af", // Dark blue (--color-primary-dark)
+                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    style={{
+                      backgroundColor: "#333333",
                     }}
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.05,
-                      backgroundColor: "#0f2473" // Even darker blue on hover
+                      backgroundColor: "#1a1a1a",
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    How many Financial Institutions has Paul worked at?
+                    What financial sector experience does Paul have?
                   </motion.button>
                   <motion.button
                     type="button"
                     onClick={() =>
-                      setInput("Where was Paul Working During Covid?")
+                      setInput(
+                        "What are Paul's technology and visionary strengths?"
+                      )
                     }
-                    className="text-xs px-4 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
-                    style={{ 
-                      backgroundColor: "#1e40af", // Dark blue (--color-primary-dark)
+                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    style={{
+                      backgroundColor: "#333333",
                     }}
-                    whileHover={{ 
+                    whileHover={{
                       scale: 1.05,
-                      backgroundColor: "#0f2473" // Even darker blue on hover
+                      backgroundColor: "#1a1a1a",
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Where was Paul Working During Covid?
+                    What are Paul's technology and visionary strengths?
                   </motion.button>
                 </div>
-                <motion.button
-                  type="button"
-                  onClick={() =>
-                    setInput("How many programming languages does Paul know?")
-                  }
-                  className="text-xs px-4 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
-                  style={{ 
-                    backgroundColor: "#1e40af", // Dark blue (--color-primary-dark)
-                  }}
-                  whileHover={{ 
-                    scale: 1.05,
-                    backgroundColor: "#0f2473" // Even darker blue on hover
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  How many programming languages does Paul know?
-                </motion.button>
+                <div className="flex space-x-4">
+                  <motion.button
+                    type="button"
+                    onClick={() => setInput("Are cats better than dogs?")}
+                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    style={{
+                      backgroundColor: "#333333",
+                    }}
+                    whileHover={{
+                      scale: 1.05,
+                      backgroundColor: "#1a1a1a",
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Are cats better than dogs?
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={() =>
+                      setInput("What leadership roles has Paul held?")
+                    }
+                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    style={{
+                      backgroundColor: "#333333",
+                    }}
+                    whileHover={{
+                      scale: 1.05,
+                      backgroundColor: "#1a1a1a",
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    What leadership roles has Paul held?
+                  </motion.button>
+                </div>
               </div>
             </form>
           </div>
