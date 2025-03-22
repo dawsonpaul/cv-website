@@ -33,6 +33,7 @@ This application is a personal CV/resume website for Paul Dawson that combines t
 
 - **Frontend**: Next.js, React, TypeScript, Tailwind CSS, Framer Motion
 - **LLM Integration**: LangChain, Anthropic Claude, OpenAI GPT-4, Google Gemini
+- **Observability**: LangSmith, LangChain Tracing
 - **Styling**: Tailwind CSS, SCSS
 - **Animation**: Framer Motion
 - **Authentication**: NextAuth.js/Auth.js
@@ -55,6 +56,8 @@ graph TD
     F --> G[Claude API]
     F --> H[OpenAI API]
     F --> I[Gemini API]
+    F --> L[LangSmith]
+    L -.-> F
     E --> J[Debug Window]
     V[Vercel Platform] --> B
 ```
@@ -65,9 +68,10 @@ graph TD
 2. The chat interface (`src/components/llm/ChatInterface.tsx`) manages the chat state and user interactions
 3. When a user sends a message, it's sent to the API route (`src/app/api/chat/route.ts`)
 4. The API route prepares the appropriate system prompt with CV data and sends the request to the selected LLM provider
-5. The response is returned to the chat interface and displayed to the user
-6. Debug information is captured and can be viewed in the debug window
-7. Protected routes and sensitive areas require authentication through the security page
+5. LangChain Tracer collects data about the request and sends it to LangSmith for observability
+6. The response is returned to the chat interface and displayed to the user
+7. Debug information is captured and can be viewed in the debug window
+8. Protected routes and sensitive areas require authentication through the security page
 
 ## LLM Integration
 
@@ -83,6 +87,7 @@ sequenceDiagram
     participant Auth as Authentication
     participant LangChain
     participant LLMProvider as LLM Provider (Claude/GPT-4/Gemini)
+    participant LangSmith
     participant Vercel as Vercel Platform
 
     User->>ChatInterface: Sends message
@@ -92,8 +97,10 @@ sequenceDiagram
     ChatInterface->>APIRoute: POST request with messages & selected model
     APIRoute->>APIRoute: Prepares system prompt with CV data
     APIRoute->>LangChain: Invokes appropriate model
+    LangChain->>LangSmith: Sends trace data
     LangChain->>LLMProvider: Sends request to provider API
     LLMProvider->>LangChain: Returns response
+    LangChain->>LangSmith: Records response data
     LangChain->>APIRoute: Returns formatted response
     APIRoute->>APIRoute: Adds debug information
     APIRoute->>ChatInterface: Returns response with debug info
@@ -131,6 +138,7 @@ The application uses LangChain in several key ways:
 2. **Message Handling**: Uses LangChain's message types (`SystemMessage`, `HumanMessage`, `AIMessage`) to structure conversations
 3. **Context Management**: Manages the conversation context and history across multiple turns
 4. **Provider-Specific Optimizations**: Configures each provider with appropriate parameters for optimal performance
+5. **Observability**: Utilizes LangChain Tracing to monitor and debug LLM interactions
 
 ### System Prompts & CV Data Containment
 
@@ -198,6 +206,32 @@ The application includes extensive debugging capabilities:
 - **Debug Page**: Detailed metrics dashboard showing token usage, latency, and other statistics
 - **Model Comparison**: Side-by-side metrics for different LLM providers
 
+### LangSmith Integration
+
+The application integrates with LangSmith for comprehensive observability and debugging:
+
+![LangSmith Tracing](/public/images/langtrace.png)
+
+1. **Tracing**: All LLM interactions are traced and sent to LangSmith for analysis
+2. **Performance Monitoring**: Track token usage, latency, and other performance metrics
+3. **Request/Response Logging**: Complete logs of all requests and responses
+4. **Debugging**: Powerful tools for identifying and troubleshooting issues
+5. **Cost Analysis**: Track usage and costs across different LLM providers
+
+#### LangSmith Configuration
+
+The application uses environment variables to configure LangSmith integration:
+
+```
+# Langchain Tracing
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=your_langsmith_api_key
+LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
+LANGCHAIN_PROJECT=your_project_name
+```
+
+When enabled, all LLM interactions are automatically traced and sent to the LangSmith dashboard for analysis.
+
 ## Security & Authentication
 
 The application implements a comprehensive security and authentication system to protect sensitive sections and control access.
@@ -245,6 +279,13 @@ OPENAI_API_KEY=your_openai_api_key
 GOOGLE_GEMINI_API_KEY=your_gemini_api_key
 NEXTAUTH_SECRET=your_nextauth_secret
 NEXTAUTH_URL=your_nextauth_url
+
+# LangSmith Configuration
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=your_langsmith_api_key
+LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
+LANGCHAIN_PROJECT=your_project_name
+
 # Add any OAuth provider credentials if used
 ```
 

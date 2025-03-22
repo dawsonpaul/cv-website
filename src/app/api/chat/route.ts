@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { ChatOpenAI } from "@langchain/openai";
 import { ChatAnthropic } from "@langchain/anthropic";
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { LangChainTracer } from "@langchain/core/tracers/tracer_langchain";
 import {
   BaseMessage,
   SystemMessage,
@@ -38,6 +39,11 @@ interface DebugInfo {
     latency: number;
     content: string;
     finishReason?: string;
+  };
+  langchainTracing?: {
+    enabled: boolean;
+    project: string;
+    endpoint: string;
   };
 }
 
@@ -211,6 +217,22 @@ function validateGeminiResponse(response: string): boolean {
 // Initialize clients with environment variables
 validateEnvVars();
 
+// Check if Langchain tracing is enabled
+const isTracingEnabled = process.env.LANGCHAIN_TRACING_V2 === 'true';
+console.log(`Langchain tracing enabled: ${isTracingEnabled}`);
+if (isTracingEnabled) {
+  console.log(`Langchain project: ${process.env.LANGCHAIN_PROJECT || "paul-cv-website-prod"}`);
+  console.log(`Langchain endpoint: ${process.env.LANGCHAIN_ENDPOINT || "https://api.smith.langchain.com"}`);
+}
+
+// Initialize LangChain tracer if tracing is enabled
+let tracer: LangChainTracer | undefined;
+if (isTracingEnabled) {
+  tracer = new LangChainTracer({
+    projectName: process.env.LANGCHAIN_PROJECT || "paul-cv-website-prod",
+  });
+}
+
 const models = {
   openai: new ChatOpenAI({
     modelName: "gpt-4-turbo-preview",
@@ -309,7 +331,15 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      response = await models[model].invoke(conversationMessages);
+      // Use tracer if available
+      if (isTracingEnabled && tracer) {
+        console.log(`Using LangChain tracer for ${model} model`);
+        response = await models[model].invoke(conversationMessages, {
+          callbacks: [tracer],
+        });
+      } else {
+        response = await models[model].invoke(conversationMessages);
+      }
 
       const endTime = performance.now();
       const latency = endTime - startTime;
@@ -340,6 +370,11 @@ export async function POST(request: NextRequest) {
           latency: Math.round(latency),
           content: contentString,
           finishReason: "stop", // Add actual finish reason if available
+        },
+        langchainTracing: {
+          enabled: isTracingEnabled,
+          project: process.env.LANGCHAIN_PROJECT || "paul-cv-website-prod",
+          endpoint: process.env.LANGCHAIN_ENDPOINT || "https://api.smith.langchain.com",
         },
       };
 
