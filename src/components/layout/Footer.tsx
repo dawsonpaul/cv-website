@@ -42,12 +42,6 @@ const Footer = () => {
             >
               dawsonpaul@gmail.com
             </a>
-            <a
-              href="tel:+447737377310"
-              className="text-sm text-text-gray hover:text-primary-light transition-colors duration-300"
-            >
-              (+44) 7737377310
-            </a>
           </div>
 
           {/* Social Links */}

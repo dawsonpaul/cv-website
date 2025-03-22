@@ -152,7 +152,7 @@ export const cvData: CVData = {
   personalInfo: {
     name: "Paul Anthony Dawson",
     email: "dawsonpaul@gmail.com",
-    contact: "(+44) (0) 7737377310",
+    contact: "",
     nationality: "British",
     availability: "4 Weeks",
     location: "Essex, United Kingdom",

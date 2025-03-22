@@ -661,6 +661,78 @@ p {
   }
 }
 
+/* Door Animation */
+@keyframes doorOpenLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes doorOpenRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Door Styles */
+.door-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background-color: var(--color-background-dark);
+  z-index: 40;
+  transform-origin: left;
+  animation: doorOpenLeft 2s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-primary-light), transparent);
+    opacity: 0.7;
+  }
+}
+
+.door-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background-color: var(--color-background-dark);
+  z-index: 40;
+  transform-origin: right;
+  animation: doorOpenRight 2s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-primary-light), transparent);
+    opacity: 0.7;
+  }
+}
+
+/* Blur effect for the content when auth screen is active */
+.content-blur {
+  filter: blur(10px);
+  transition: filter 0.5s ease;
+}
+
 .animate-fade-in {
   animation: fadeIn 0.5s ease-in-out;
 }

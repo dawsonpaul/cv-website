@@ -9,6 +9,7 @@ A modern, interactive CV/resume website built with Next.js that features an AI-p
 - [Overview](#overview)
 - [Architecture](#architecture)
 - [LLM Integration](#llm-integration)
+- [Security & Authentication](#security--authentication)
 - [Setup & Installation](#setup--installation)
 - [Component Documentation](#component-documentation)
 - [Deployment](#deployment)
@@ -24,6 +25,8 @@ This application is a personal CV/resume website for Paul Dawson that combines t
 - **Real-time Model Switching**: Seamlessly switch between different LLM providers
 - **Technical Debug Interface**: Detailed metrics and debugging for LLM interactions
 - **Responsive Design**: Fully responsive layout that works on all devices
+- **Authentication**: Secure access control for protected areas of the website
+- **Vercel Deployment**: Production-ready deployment with Vercel
 
 ### Technologies Used
 
@@ -31,6 +34,8 @@ This application is a personal CV/resume website for Paul Dawson that combines t
 - **LLM Integration**: LangChain, Anthropic Claude, OpenAI GPT-4, Google Gemini
 - **Styling**: Tailwind CSS, SCSS
 - **Animation**: Framer Motion
+- **Authentication**: NextAuth.js/Auth.js
+- **Deployment**: Vercel
 
 ## Architecture
 
@@ -43,12 +48,14 @@ graph TD
     A[Browser] --> B[Next.js Frontend]
     B --> C[CV Components]
     B --> D[Chat Interface]
+    B --> S[Security/Auth]
     D --> E[Next.js API Route]
     E --> F[LangChain]
     F --> G[Claude API]
     F --> H[OpenAI API]
     F --> I[Gemini API]
     E --> J[Debug Window]
+    V[Vercel Platform] --> B
 ```
 
 ### Application Flow
@@ -59,6 +66,7 @@ graph TD
 4. The API route prepares the appropriate system prompt with CV data and sends the request to the selected LLM provider
 5. The response is returned to the chat interface and displayed to the user
 6. Debug information is captured and can be viewed in the debug window
+7. Protected routes and sensitive areas require authentication through the security page
 
 ## LLM Integration
 
@@ -71,10 +79,15 @@ sequenceDiagram
     participant User
     participant ChatInterface
     participant APIRoute as /api/chat
+    participant Auth as Authentication
     participant LangChain
     participant LLMProvider as LLM Provider (Claude/GPT-4/Gemini)
-    
+    participant Vercel as Vercel Platform
+
     User->>ChatInterface: Sends message
+    Note over User,Auth: For protected routes
+    User->>Auth: Authenticates
+    Auth->>User: Grants access
     ChatInterface->>APIRoute: POST request with messages & selected model
     APIRoute->>APIRoute: Prepares system prompt with CV data
     APIRoute->>LangChain: Invokes appropriate model
@@ -85,6 +98,7 @@ sequenceDiagram
     APIRoute->>ChatInterface: Returns response with debug info
     ChatInterface->>User: Displays response
     ChatInterface->>DebugWindow: Sends debug information
+    Vercel->>Vercel: Handles deployment & hosting
 ```
 
 ### LLM Provider Configuration
@@ -92,11 +106,13 @@ sequenceDiagram
 The application supports three LLM providers:
 
 1. **Claude (Anthropic)**
+
    - Model: claude-3-opus-20240229
    - Max Tokens: 300
    - Context Window: 200,000 tokens
 
 2. **GPT-4 (OpenAI)**
+
    - Model: gpt-4-turbo-preview
    - Max Tokens: 300
    - Context Window: 128,000 tokens
@@ -181,6 +197,31 @@ The application includes extensive debugging capabilities:
 - **Debug Page**: Detailed metrics dashboard showing token usage, latency, and other statistics
 - **Model Comparison**: Side-by-side metrics for different LLM providers
 
+## Security & Authentication
+
+The application implements a comprehensive security and authentication system to protect sensitive sections and control access.
+
+### Authentication Features
+
+- **Protected Routes**: Certain areas of the website require authentication
+- **Role-Based Access**: Different user roles have different levels of access
+- **Secure Login**: Industry-standard authentication flow with proper security measures
+- **API Protection**: API routes that expose sensitive data are protected
+
+### Authentication Flow
+
+1. Users access the login page from the security page
+2. After successful authentication, users receive a session token
+3. Protected routes check for valid authentication before rendering content
+4. API routes validate authentication tokens before processing requests
+
+### Authentication Components
+
+- **Security Page** (`src/app/security/page.tsx`): Entry point for authentication
+- **Login Component** (`src/components/auth/Login.tsx`): Handles user login
+- **Auth Provider** (`src/providers/AuthProvider.tsx`): Manages authentication state
+- **Protected Route** (`src/components/auth/ProtectedRoute.tsx`): Higher-order component for route protection
+
 ## Setup & Installation
 
 ### Prerequisites
@@ -191,6 +232,7 @@ The application includes extensive debugging capabilities:
   - Anthropic API key
   - OpenAI API key
   - Google Gemini API key
+- Authentication provider credentials (if using OAuth)
 
 ### Environment Variables
 
@@ -200,17 +242,22 @@ Create a `.env.local` file in the root directory with the following variables:
 ANTHROPIC_API_KEY=your_anthropic_api_key
 OPENAI_API_KEY=your_openai_api_key
 GOOGLE_GEMINI_API_KEY=your_gemini_api_key
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=your_nextauth_url
+# Add any OAuth provider credentials if used
 ```
 
 ### Installation
 
 1. Clone the repository
+
    ```bash
    git clone https://github.com/yourusername/cv-website.git
    cd cv-website
    ```
 
 2. Install dependencies
+
    ```bash
    npm install
    # or
@@ -218,6 +265,7 @@ GOOGLE_GEMINI_API_KEY=your_gemini_api_key
    ```
 
 3. Run the development server
+
    ```bash
    npm run dev
    # or
@@ -236,6 +284,7 @@ GOOGLE_GEMINI_API_KEY=your_gemini_api_key
 - **Skills** (`src/components/cv/Skills.tsx`): Skills section with categories and proficiency levels
 - **ChatInterface** (`src/components/llm/ChatInterface.tsx`): LLM-powered chat interface
 - **LLMDebugWindow** (`src/components/LLMDebugWindow.tsx`): Debug window for technical information
+- **Security** (`src/components/security/Security.tsx`): Security and authentication components
 
 ### CV Data Structure
 
@@ -256,6 +305,7 @@ interface CVData {
 #### ChatInterface.tsx
 
 The main chat interface component that:
+
 - Manages chat state (messages, loading state)
 - Handles user input and form submission
 - Allows switching between different LLM models
@@ -265,6 +315,7 @@ The main chat interface component that:
 #### API Route (route.ts)
 
 The API route that:
+
 - Validates environment variables and input
 - Prepares system prompts with CV data
 - Handles requests to different LLM providers through LangChain
@@ -279,12 +330,23 @@ The API route that:
 
 ## Deployment
 
+The application is deployed on Vercel for optimal performance and scalability.
+
+### Vercel Deployment
+
+- The application is automatically deployed to Vercel via GitHub integration
+- Environment variables are securely managed in the Vercel dashboard
+- Each commit to the main branch triggers a new deployment
+- Preview deployments are created for pull requests
+
 ### Deployment Options
 
-1. **Vercel** (Recommended)
+1. **Vercel** (Currently Used)
+
    - Connect your GitHub repository to Vercel
    - Configure environment variables in the Vercel dashboard
    - Deploy with a single click
+   - Custom domain configuration through Vercel
 
 2. **Other Platforms**
    - Build the application: `npm run build`
@@ -296,6 +358,7 @@ The API route that:
 - Ensure all API keys are properly set in the production environment
 - Consider rate limits and costs associated with the LLM providers
 - For high-traffic sites, implement caching or rate limiting to manage API usage
+- Review authentication provider rate limits if applicable
 
 ## License
 

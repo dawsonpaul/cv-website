@@ -40,7 +40,7 @@ const ChatInterface = () => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  
+
   // Function to open debug window
   const openDebugWindow = () => {
     const debug = window.open(
@@ -50,7 +50,7 @@ const ChatInterface = () => {
     );
     setDebugWindow(debug);
   };
-  
+
   // Function to send message to debug window
   const sendToDebugWindow = (message: any) => {
     if (debugWindow && !debugWindow.closed) {
@@ -78,14 +78,14 @@ const ChatInterface = () => {
     if (!input.trim()) return;
 
     const timestamp = new Date().toLocaleTimeString();
-    
+
     // Send user message to debug window
     sendToDebugWindow({
       role: "user",
       content: input.trim(),
       timestamp,
     });
-    
+
     // Add input validation
     const sanitizedInput = input.trim();
 
@@ -138,7 +138,7 @@ const ChatInterface = () => {
       }
 
       const data = await response.json();
-      
+
       // Send to debug window with technical details
       sendToDebugWindow({
         role: "assistant",
@@ -378,6 +378,65 @@ const ChatInterface = () => {
                       transition={{ duration: 0.3 }}
                     />
                   )}
+                </motion.button>
+              </div>
+
+              {/* Clickable Suggestions */}
+              <div className="mt-8 flex flex-col items-center space-y-3">
+                <div className="flex space-x-4">
+                  <motion.button
+                    type="button"
+                    onClick={() =>
+                      setInput(
+                        "How many Financial Institutions has Paul worked at?"
+                      )
+                    }
+                    className="text-xs px-4 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    style={{ 
+                      backgroundColor: "#1e40af", // Dark blue (--color-primary-dark)
+                    }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      backgroundColor: "#0f2473" // Even darker blue on hover
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    How many Financial Institutions has Paul worked at?
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={() =>
+                      setInput("Where was Paul Working During Covid?")
+                    }
+                    className="text-xs px-4 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    style={{ 
+                      backgroundColor: "#1e40af", // Dark blue (--color-primary-dark)
+                    }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      backgroundColor: "#0f2473" // Even darker blue on hover
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Where was Paul Working During Covid?
+                  </motion.button>
+                </div>
+                <motion.button
+                  type="button"
+                  onClick={() =>
+                    setInput("How many programming languages does Paul know?")
+                  }
+                  className="text-xs px-4 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                  style={{ 
+                    backgroundColor: "#1e40af", // Dark blue (--color-primary-dark)
+                  }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    backgroundColor: "#0f2473" // Even darker blue on hover
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  How many programming languages does Paul know?
                 </motion.button>
               </div>
             </form>

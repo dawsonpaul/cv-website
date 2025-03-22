@@ -10,6 +10,32 @@
   --primary-accent: #2563eb;
 }
 
+/* Hide all Next.js debug elements */
+[data-next-debug],
+.nextjs-container-errors-with-details-error-message,
+.nextjs-container-errors-with-details,
+[data-nextjs-dialog-overlay],
+[data-nextjs-dialog],
+[data-nextjs-terminal],
+[data-nextjs-toast],
+[data-nextjs-error-dialog],
+[data-nextjs-version],
+[data-nextjs-refresh] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 @layer base {
   img {
     max-width: 100%;

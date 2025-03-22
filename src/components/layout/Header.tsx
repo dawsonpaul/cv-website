@@ -68,49 +68,68 @@ const Header = () => {
           </Link>
         </motion.div>
 
-        <motion.nav
-          className="hidden md:flex space-x-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <NavLink href="#about">About</NavLink>
-          <NavLink href="#experience">Experience</NavLink>
-          <NavLink href="#skills">Skills</NavLink>
-          <NavLink href="#chat">Chat With My CV</NavLink>
-          <NavLink href="#contact">Contact</NavLink>
-        </motion.nav>
-
-        <motion.div
-          className="md:hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <button
-            className="text-text-light p-2 rounded-md"
-            onClick={toggleMobileMenu}
+        <div className="flex items-center">
+          <motion.nav
+            className="hidden md:flex items-center space-x-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            <NavLink href="#about">About</NavLink>
+            <NavLink href="#experience">Experience</NavLink>
+            <NavLink href="#skills">Skills</NavLink>
+            <NavLink href="#chat">Chat With My CV</NavLink>
+            <NavLink href="#contact">Contact</NavLink>
+          </motion.nav>
+
+          {/* GitHub Button with Image */}
+          <a
+            href="https://github.com/dawsonpaul/cv-website"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden md:flex items-center bg-gray-800 hover:bg-gray-700 text-white font-bold text-sm px-4 py-2 rounded-md ml-6 transition-colors duration-300"
+          >
+            <img
+              src="/images/github.svg"
+              alt="GitHub"
+              width={20}
+              height={20}
+              className="mr-2"
+            />
+            GitHub
+          </a>
+
+          <motion.div
+            className="md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <button
+              className="text-text-light p-2 rounded-md"
+              onClick={toggleMobileMenu}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={
-                  mobileMenuOpen
-                    ? "M6 18L18 6M6 6l12 12"
-                    : "M4 6h16M4 12h16M4 18h16"
-                }
-              />
-            </svg>
-          </button>
-        </motion.div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d={
+                    mobileMenuOpen
+                      ? "M6 18L18 6M6 6l12 12"
+                      : "M4 6h16M4 12h16M4 18h16"
+                  }
+                />
+              </svg>
+            </button>
+          </motion.div>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -153,6 +172,12 @@ const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
+              </MobileNavLink>
+              <MobileNavLink
+                href="https://github.com/dawsonpaul/cv-website"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                GitHub
               </MobileNavLink>
             </div>
           </motion.div>
