@@ -141,7 +141,7 @@ const TerminalText = ({ text }: { text: string }) => {
 
   return (
     <motion.div
-      className="font-mono text-lg leading-relaxed mb-10 rounded-lg overflow-hidden shadow-2xl"
+      className="font-mono text-[10px] leading-relaxed mb-10 rounded-lg overflow-hidden shadow-2xl"
       initial={{ opacity: 0 }}
       animate={controls}
       transition={{ duration: 0.5, delay: 0.6 }}
