@@ -303,6 +303,11 @@ const ChatInterface = () => {
                         ? "bg-primary-DEFAULT text-white w-full"
                         : "glass-effect text-text-light"
                     }`}
+                    style={
+                      message.role === "user"
+                        ? {}
+                        : { backgroundColor: "#1a1f2e" }
+                    }
                   >
                     <div className="text-sm leading-relaxed">
                       {message.content}
@@ -332,7 +337,10 @@ const ChatInterface = () => {
               ))}
               {isLoading && (
                 <div className="flex justify-start">
-                  <div className="glass-effect text-text-light max-w-[80%] rounded-xl px-6 py-4 shadow-soft">
+                  <div
+                    className="glass-effect text-text-light max-w-[80%] rounded-xl px-6 py-4 shadow-soft"
+                    style={{ backgroundColor: "#1a1f2e" }}
+                  >
                     <div className="flex items-center justify-center w-12 h-8">
                       <motion.img
                         src={`/logos/${selectedModel}-logo.png`}
@@ -492,11 +500,12 @@ const ModelButton = ({
 }: ModelButtonProps) => {
   return (
     <motion.button
-      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center ${
+      className={`px-4 py-2 rounded-lg sm:text-sm text-xs font-medium transition-all duration-300 flex items-center ${
         selectedModel === model
           ? "bg-primary-DEFAULT text-white shadow-glow"
           : "glass-effect text-text-gray hover:bg-primary-DEFAULT/20"
       }`}
+      style={selectedModel === model ? {} : { backgroundColor: "#1a1f2e" }}
       onClick={() => setSelectedModel(model)}
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}

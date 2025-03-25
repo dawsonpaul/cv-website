@@ -124,6 +124,14 @@
 /* Glass effect */
 .glass-effect {
   @apply bg-white bg-opacity-10 backdrop-filter backdrop-blur-sm border border-white border-opacity-20 shadow-soft;
+  background-color: #1a1f2e;
+}
+
+@media (min-width: 640px) {
+  .glass-effect {
+    @apply bg-white bg-opacity-10 backdrop-filter backdrop-blur-sm border border-white border-opacity-20 shadow-soft;
+    background-color: rgba(26, 31, 46, 0.8);
+  }
 }
 
 /* Card styles */
