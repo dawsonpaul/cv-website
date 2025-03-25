@@ -215,7 +215,7 @@ const ChatInterface = () => {
                       src="/logos/claude-logo.png"
                       alt="Claude logo"
                       style={{ width: "33px", height: "33px" }}
-                      className="mr-2 object-contain"
+                      className="mr-2 object-contain sm:w-[33px] sm:h-[33px] w-[24px] h-[24px]"
                     />
                   }
                 />
@@ -229,7 +229,7 @@ const ChatInterface = () => {
                       src="/logos/openai-logo.png"
                       alt="GPT-4 logo"
                       style={{ width: "33px", height: "33px" }}
-                      className="mr-2 object-contain"
+                      className="mr-2 object-contain sm:w-[33px] sm:h-[33px] w-[24px] h-[24px]"
                     />
                   }
                 />
@@ -243,14 +243,14 @@ const ChatInterface = () => {
                       src="/logos/gemini-logo.png"
                       alt="Gemini logo"
                       style={{ width: "33px", height: "33px" }}
-                      className="mr-2 object-contain"
+                      className="mr-2 object-contain sm:w-[33px] sm:h-[33px] w-[24px] h-[24px]"
                     />
                   }
                 />
               </div>
               <motion.button
                 onClick={openDebugWindow}
-                className="text-xs px-6 py-1.5 bg-primary-DEFAULT/20 hover:bg-primary-DEFAULT/30 text-primary-light rounded-md flex items-center gap-3 transition-colors whitespace-nowrap min-w-[120px]"
+                className="text-xs px-6 py-1.5 bg-primary-DEFAULT/20 hover:bg-primary-DEFAULT/30 text-primary-light rounded-md flex items-center gap-3 transition-colors whitespace-nowrap sm:min-w-[120px] min-w-[80px] sm:text-xs text-[9px]"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -310,9 +310,9 @@ const ChatInterface = () => {
                           src={`/logos/${message.model}-logo.png`}
                           alt={`${message.model} logo`}
                           style={{ width: "20px", height: "20px" }}
-                          className="mr-2 object-contain"
+                          className="mr-2 object-contain sm:w-[20px] sm:h-[20px] w-[16px] h-[16px]"
                         />
-                        <span className="flex-grow text-left">
+                        <span className="flex-grow text-left sm:text-xs text-[9px]">
                           {getModelDisplayName(message.model)}
                         </span>
                       </div>
@@ -328,7 +328,7 @@ const ChatInterface = () => {
                         src={`/logos/${selectedModel}-logo.png`}
                         alt={`${selectedModel} logo`}
                         style={{ width: "20px", height: "20px" }}
-                        className="object-contain"
+                        className="object-contain sm:w-[20px] sm:h-[20px] w-[16px] h-[16px]"
                         animate={{
                           scale: [1, 1.2, 1],
                           opacity: [0.7, 1, 0.7],
@@ -378,7 +378,7 @@ const ChatInterface = () => {
                       src={`/logos/${selectedModel}-logo.png`}
                       alt={`${selectedModel} logo`}
                       style={{ width: "27px", height: "27px" }}
-                      className="object-contain"
+                      className="object-contain sm:w-[27px] sm:h-[27px] w-[20px] h-[20px]"
                       initial={{ rotate: -180, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       transition={{ duration: 0.3 }}
@@ -389,7 +389,7 @@ const ChatInterface = () => {
 
               {/* Clickable Suggestions */}
               <div className="mt-8 flex flex-col items-center space-y-3">
-                <div className="flex space-x-4">
+                <div className="flex space-x-4 flex-wrap justify-center">
                   <motion.button
                     type="button"
                     onClick={() =>
@@ -397,7 +397,7 @@ const ChatInterface = () => {
                         "What financial sector experience does Paul have?"
                       )
                     }
-                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
                     style={{
                       backgroundColor: "#333333",
                     }}
@@ -416,7 +416,7 @@ const ChatInterface = () => {
                         "What are Paul's technology and visionary strengths?"
                       )
                     }
-                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
                     style={{
                       backgroundColor: "#333333",
                     }}
@@ -429,11 +429,11 @@ const ChatInterface = () => {
                     What are Paul's technology and visionary strengths?
                   </motion.button>
                 </div>
-                <div className="flex space-x-4">
+                <div className="flex space-x-4 flex-wrap justify-center">
                   <motion.button
                     type="button"
                     onClick={() => setInput("Are cats better than dogs?")}
-                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
                     style={{
                       backgroundColor: "#333333",
                     }}
@@ -450,7 +450,7 @@ const ChatInterface = () => {
                     onClick={() =>
                       setInput("What leadership roles has Paul held?")
                     }
-                    className="text-xs px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors"
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
                     style={{
                       backgroundColor: "#333333",
                     }}
@@ -489,7 +489,7 @@ const ModelButton = ({
 }: ModelButtonProps) => {
   return (
     <motion.button
-      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center ${
+      className={`px-4 py-2 rounded-lg sm:text-sm text-xs font-medium transition-all duration-300 flex items-center ${
         selectedModel === model
           ? "bg-primary-DEFAULT text-white shadow-glow"
           : "glass-effect text-text-gray hover:bg-primary-DEFAULT/20"
@@ -508,7 +508,7 @@ const ModelButton = ({
       >
         {icon}
       </motion.div>
-      {label}
+      <span className="sm:inline hidden">{label}</span>
     </motion.button>
   );
 };
