@@ -8,6 +8,7 @@
   --primary: #1e40af;
   --primary-light: #3b82f6;
   --primary-accent: #2563eb;
+  font-size: 12px;
 }
 
 /* Hide all Next.js debug elements */
