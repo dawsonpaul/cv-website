@@ -203,7 +203,14 @@ const ChatInterface = () => {
           viewport={{ once: true }}
         >
           <div className="card overflow-hidden shadow-card">
-            <div className="flex border-b border-gray-800 p-4 bg-background-card justify-between items-center">
+            <div
+              className="flex border-b border-gray-800 p-4 bg-background-card justify-between items-center"
+              style={{
+                backgroundColor: "#1E293B",
+                position: "relative",
+                zIndex: 5,
+              }}
+            >
               <div className="flex space-x-2">
                 <ModelButton
                   model="claude"
@@ -215,7 +222,7 @@ const ChatInterface = () => {
                       src="/logos/claude-logo.png"
                       alt="Claude logo"
                       style={{ width: "33px", height: "33px" }}
-                      className="mr-2 object-contain sm:w-[33px] sm:h-[33px] w-[24px] h-[24px]"
+                      className="mr-2 object-contain"
                     />
                   }
                 />
@@ -229,7 +236,7 @@ const ChatInterface = () => {
                       src="/logos/openai-logo.png"
                       alt="GPT-4 logo"
                       style={{ width: "33px", height: "33px" }}
-                      className="mr-2 object-contain sm:w-[33px] sm:h-[33px] w-[24px] h-[24px]"
+                      className="mr-2 object-contain"
                     />
                   }
                 />
@@ -243,14 +250,14 @@ const ChatInterface = () => {
                       src="/logos/gemini-logo.png"
                       alt="Gemini logo"
                       style={{ width: "33px", height: "33px" }}
-                      className="mr-2 object-contain sm:w-[33px] sm:h-[33px] w-[24px] h-[24px]"
+                      className="mr-2 object-contain"
                     />
                   }
                 />
               </div>
               <motion.button
                 onClick={openDebugWindow}
-                className="text-xs px-6 py-1.5 bg-primary-DEFAULT/20 hover:bg-primary-DEFAULT/30 text-primary-light rounded-md flex items-center gap-3 transition-colors whitespace-nowrap sm:min-w-[120px] min-w-[80px] sm:text-xs text-[9px]"
+                className="text-xs px-6 py-1.5 bg-primary-DEFAULT/20 hover:bg-primary-DEFAULT/30 text-primary-light rounded-md flex items-center gap-3 transition-colors whitespace-nowrap min-w-[120px]"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -275,6 +282,9 @@ const ChatInterface = () => {
               className="overflow-y-auto p-4 space-y-4 bg-gradient-dark px-8 custom-scrollbar"
               style={{
                 maxHeight: "500px",
+                backgroundColor: "#0F172A",
+                position: "relative",
+                zIndex: 1,
               }}
             >
               {messages.map((message, index) => (
@@ -310,9 +320,9 @@ const ChatInterface = () => {
                           src={`/logos/${message.model}-logo.png`}
                           alt={`${message.model} logo`}
                           style={{ width: "20px", height: "20px" }}
-                          className="mr-2 object-contain sm:w-[20px] sm:h-[20px] w-[16px] h-[16px]"
+                          className="mr-2 object-contain"
                         />
-                        <span className="flex-grow text-left sm:text-xs text-[9px]">
+                        <span className="flex-grow text-left">
                           {getModelDisplayName(message.model)}
                         </span>
                       </div>
@@ -328,7 +338,7 @@ const ChatInterface = () => {
                         src={`/logos/${selectedModel}-logo.png`}
                         alt={`${selectedModel} logo`}
                         style={{ width: "20px", height: "20px" }}
-                        className="object-contain sm:w-[20px] sm:h-[20px] w-[16px] h-[16px]"
+                        className="object-contain"
                         animate={{
                           scale: [1, 1.2, 1],
                           opacity: [0.7, 1, 0.7],
@@ -349,6 +359,11 @@ const ChatInterface = () => {
             <form
               onSubmit={handleSubmit}
               className="border-t border-gray-800 p-4 bg-background-card"
+              style={{
+                backgroundColor: "#1E293B",
+                position: "relative",
+                zIndex: 10,
+              }}
             >
               <div className="flex space-x-2">
                 <input
@@ -378,7 +393,7 @@ const ChatInterface = () => {
                       src={`/logos/${selectedModel}-logo.png`}
                       alt={`${selectedModel} logo`}
                       style={{ width: "27px", height: "27px" }}
-                      className="object-contain sm:w-[27px] sm:h-[27px] w-[20px] h-[20px]"
+                      className="object-contain"
                       initial={{ rotate: -180, opacity: 0 }}
                       animate={{ rotate: 0, opacity: 1 }}
                       transition={{ duration: 0.3 }}
@@ -388,7 +403,7 @@ const ChatInterface = () => {
               </div>
 
               {/* Clickable Suggestions */}
-              <div className="mt-8 flex flex-col items-center space-y-3">
+              <div className="mt-8 flex flex-col items-center space-y-3 relative z-10">
                 <div className="flex space-x-4 flex-wrap justify-center">
                   <motion.button
                     type="button"
@@ -397,10 +412,7 @@ const ChatInterface = () => {
                         "What financial sector experience does Paul have?"
                       )
                     }
-                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
-                    style={{
-                      backgroundColor: "#333333",
-                    }}
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2 bg-[#333333]"
                     whileHover={{
                       scale: 1.05,
                       backgroundColor: "#1a1a1a",
@@ -416,10 +428,7 @@ const ChatInterface = () => {
                         "What are Paul's technology and visionary strengths?"
                       )
                     }
-                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
-                    style={{
-                      backgroundColor: "#333333",
-                    }}
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2 bg-[#333333]"
                     whileHover={{
                       scale: 1.05,
                       backgroundColor: "#1a1a1a",
@@ -433,10 +442,7 @@ const ChatInterface = () => {
                   <motion.button
                     type="button"
                     onClick={() => setInput("Are cats better than dogs?")}
-                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
-                    style={{
-                      backgroundColor: "#333333",
-                    }}
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2 bg-[#333333]"
                     whileHover={{
                       scale: 1.05,
                       backgroundColor: "#1a1a1a",
@@ -450,10 +456,7 @@ const ChatInterface = () => {
                     onClick={() =>
                       setInput("What leadership roles has Paul held?")
                     }
-                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2"
-                    style={{
-                      backgroundColor: "#333333",
-                    }}
+                    className="text-[10px] sm:text-xs px-3 sm:px-6 py-1.5 rounded-full text-primary-light border border-primary-light/30 transition-colors mb-2 bg-[#333333]"
                     whileHover={{
                       scale: 1.05,
                       backgroundColor: "#1a1a1a",
@@ -489,7 +492,7 @@ const ModelButton = ({
 }: ModelButtonProps) => {
   return (
     <motion.button
-      className={`px-4 py-2 rounded-lg sm:text-sm text-xs font-medium transition-all duration-300 flex items-center ${
+      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 flex items-center ${
         selectedModel === model
           ? "bg-primary-DEFAULT text-white shadow-glow"
           : "glass-effect text-text-gray hover:bg-primary-DEFAULT/20"
@@ -508,7 +511,7 @@ const ModelButton = ({
       >
         {icon}
       </motion.div>
-      <span className="sm:inline hidden">{label}</span>
+      {label}
     </motion.button>
   );
 };
